@@ -1,0 +1,20 @@
+# ninja log v7
+75	393	8064206946455501	CMakeFiles/Learning_Startup.dir/Core/Src/sysmem.c.obj	744c75783b432148
+108	431	8064206946805998	CMakeFiles/Learning_Startup.dir/startup_stm32f103xb.s.obj	1fa30493f1ed3397
+93	494	8064206946632541	CMakeFiles/Learning_Startup.dir/Core/Src/syscalls.c.obj	32746ceab0a8ddcc
+29	591	8064206946004809	CMakeFiles/Learning_Startup.dir/Core/Src/main.c.obj	beae29527702b4ea
+43	606	8064206946144642	CMakeFiles/Learning_Startup.dir/Core/Src/stm32f1xx_it.c.obj	ce4f0efde7dbf9
+59	614	8064206946311514	CMakeFiles/Learning_Startup.dir/Core/Src/stm32f1xx_hal_msp.c.obj	fb0333e861b30690
+197	720	8064206947697189	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c.obj	6d0a7452a62c8476
+126	740	8064206947225379	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32f1xx.c.obj	3c30bd4936a0cdd8
+227	808	8064206947973018	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c.obj	259a3c7d9e5a8605
+241	813	8064206948129633	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c.obj	49c45de4b0991ca2
+277	840	8064206948554387	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c.obj	ee115766183a3269
+299	853	8064206948734798	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c.obj	bdd2f019756ca04
+317	862	8064206948989165	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c.obj	804cf3c7d7d65fda
+256	866	8064206948327906	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c.obj	df6d2f4d46ee6ae4
+416	900	8064206949876880	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c.obj	20c308f3ad28d840
+432	958	8064206950031790	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c.obj	a77ca51a9d774a16
+495	960	8064206950662476	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c.obj	2a640fb669cd9cb6
+592	1015	8064206951632033	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c.obj	1cab534c9c865565
+1015	1330	8064206955866146	Learning_Startup.elf	f1db3d77f7a52c02

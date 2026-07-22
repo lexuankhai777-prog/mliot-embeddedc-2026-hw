@@ -1,0 +1,14 @@
+Task 5 LED feedback design: Cách 2 - Điều khiển LED phản hồi qua Firmware.
+
+Task 1.1
+GPIO Output Push-Pull dùng hai transistor bên trong chân GPIO là PMOS và NMOS. Khi xuất mức logic 1, transistor phía trên được bật để nối chân GPIO lên VDD, còn transistor phía dưới tắt, nên chân ra mức khoảng 3.3V. Khi xuất mức logic 0, transistor phía dưới được bật để nối chân GPIO xuống GND, còn transistor phía trên tắt, nên chân ra mức khoảng 0V.
+
+Task 1.2
+Input Pull-up được dùng khi cần đọc một tín hiệu đầu vào có trạng thái mặc định là mức 1, ví dụ nút nhấn nối giữa chân GPIO và GND. Khi chưa nhấn, điện trở kéo lên giữ chân ở mức 1. Khi nhấn, chân bị kéo xuống GND nên đọc được mức 0.
+Nếu một chân Input để Floating và không nối vào đâu, giá trị đọc được sẽ không ổn định. Chân đó có thể lúc đọc là 0, lúc đọc là 1 do nhiễu điện từ môi trường hoặc do điện tích lơ lửng trên chân GPIO. Vì vậy khi đọc nút nhấn hoặc tín hiệu số đơn giản, cần dùng Pull-up hoặc Pull-down để tạo trạng thái mặc định rõ ràng.
+
+Task 2
+ST mặc định tắt clock của các ngoại vi sau khi reset để tiết kiệm năng lượng và tránh các ngoại vi chưa dùng hoạt động không cần thiết. Trong vi điều khiển, mỗi GPIO port thuộc một bus clock nhất định, ví dụ GPIO trên STM32F103 nằm trên APB2. Muốn cấu hình hoặc sử dụng GPIO port nào thì trước hết phải bật clock cho port đó.
+Nếu quên bật clock mà đã cấu hình thanh ghi GPIO, các thao tác ghi cấu hình có thể không có tác dụng hoặc ngoại vi không hoạt động đúng. Khi đó dù chương trình có gọi hàm cấu hình chân GPIO, chân thực tế vẫn không đổi trạng thái như mong muốn. Vì vậy quy trình đúng là: bật clock cho port, cấu hình mode/pull/speed, rồi mới viết logic ứng dụng.
+
+Link video demo Task 5: [sẽ bổ sung sau khi quay video]
