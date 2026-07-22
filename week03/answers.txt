@@ -1,0 +1,45 @@
+Task 1.1
+CMake: dùng để cấu hình dự án, đọc CMakeLists.txt và sinh ra hệ thống build phù hợp, ở đây là file build cho Ninja.
+Ninja: dùng để thực hiện quá trình build theo các rule đã được CMake sinh ra. Ninja gọi compiler, assembler, linker và chỉ build lại những phần cần thiết.
+Compiler (arm-none-eabi-gcc): là bộ biên dịch cho vi điều khiển ARM Cortex-M. Nó dịch mã nguồn C/ASM thành mã máy phù hợp với STM32, tạo ra các file .o và tham gia bước link để sinh firmware.
+STM32_Programmer_CLI: là công cụ dòng lệnh dùng để kết nối ST-Link với STM32, ghi file firmware xuống Flash, verify dữ liệu và reset chip sau khi nạp.
+
+Task 1.2
+Trình tự logic là:
+Đầu tiên, CMake được chạy bằng lệnh cấu hình. CMake đọc CMakeLists.txt, kiểm tra toolchain và sinh ra các file build trong thư mục build.
+Sau đó, Ninja được gọi để build dự án. Ninja dựa trên các rule do CMake tạo ra để gọi arm-none-eabi-gcc dịch các file .c/.s thành .o, rồi gọi linker để liên kết thành file .elf.
+Từ file .elf, công cụ objcopy trong toolchain tạo ra file .bin hoặc .hex dùng để nạp vào vi điều khiển.
+Cuối cùng, STM32_Programmer_CLI dùng file .bin, kết nối với board qua ST-Link/SWD, ghi dữ liệu vào vùng Flash bắt đầu tại địa chỉ 0x08000000, sau đó reset chip để chương trình mới chạy.
+
+Task 2.1
+Không thể nạp trực tiếp các file .o xuống chip vì mỗi file .o chỉ là một phần mã máy riêng lẻ sau khi biên dịch từng file nguồn. Trong file .o vẫn còn các symbol chưa được giải quyết, ví dụ một file gọi hàm nằm ở file khác thì địa chỉ thật của hàm đó chưa được xác định.
+Linker có nhiệm vụ gom các file .o lại, giải quyết địa chỉ của hàm và biến giữa các file, sắp xếp các section như .text, .rodata, .data, .bss theo linker script và tạo ra file chương trình hoàn chỉnh.
+File .bin khác file .o ở chỗ .bin là ảnh firmware cuối cùng, chứa dữ liệu nhị phân đã được sắp xếp đúng để ghi vào Flash của vi điều khiển. File .o chỉ là sản phẩm trung gian, chưa phải firmware hoàn chỉnh.
+
+Task 2.2
+Incremental Build của Ninja giúp tiết kiệm thời gian khi dự án có nhiều file. Nếu chỉ sửa một file .c, Ninja không build lại toàn bộ dự án mà chỉ biên dịch lại file đó và các phần phụ thuộc cần thiết.
+Ninja biết file nào cần build lại dựa vào thông tin dependency và timestamp của file. Khi thời gian sửa đổi của file nguồn mới hơn file object tương ứng, Ninja xem file đó đã thay đổi và chỉ chạy lại rule liên quan. Các file không đổi thì được giữ nguyên.
+
+Task 3.1
+Trong đoạn linker script:
+_sidata = LOADADDR(.data);
+.data :
+{
+  _sdata = .;
+  *(.data*)
+  _edata = .;
+} >RAM AT> FLASH
+vùng .data có hai địa chỉ khác nhau: LMA và VMA.
+LMA là Load Memory Address, tức là địa chỉ nơi dữ liệu ban đầu được lưu trong Flash. Trong đoạn trên, _sidata = LOADADDR(.data) chính là địa chỉ nguồn trong Flash.
+VMA là Virtual/Runtime Memory Address, tức là địa chỉ nơi biến .data sẽ tồn tại khi chương trình đang chạy. Với khai báo >RAM, vùng .data sẽ chạy trong RAM, bắt đầu từ _sdata và kết thúc ở _edata.
+Vùng .data cần cả hai địa chỉ vì biến toàn cục có giá trị khởi tạo phải giữ được giá trị sau khi mất nguồn, nên giá trị ban đầu phải nằm trong Flash. Tuy nhiên khi chương trình chạy, các biến này cần được đọc/ghi bình thường nên phải được đặt trong RAM.
+
+Task 3.2
+Nếu Reset_Handler hoặc startup code quên sao chép dữ liệu từ _sidata trong Flash sang _sdata trong RAM, các biến toàn cục có khởi tạo sẽ không nhận đúng giá trị ban đầu.
+Ví dụ nếu có biến uint32_t boot_count = 10 thì sau reset, vùng RAM dành cho biến này có thể chứa giá trị rác hoặc giá trị không đúng thay vì 10. Khi đó chương trình có thể chạy sai logic, cấu hình sai trạng thái ban đầu hoặc lỗi khó đoán. Đây là lý do startup code phải copy .data từ Flash sang RAM trước khi gọi main().
+
+Task 4.1
+cmake -B build -G Ninja
+
+Task 4.2
+cmake --build build
